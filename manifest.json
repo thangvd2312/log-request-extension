@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Logger Page",
+  "version": "1.0",
+  "description": "Logger Request Current Page",
+  "permissions": ["webRequest", "webRequestAuthProvider", "activeTab", "storage", "scripting"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
