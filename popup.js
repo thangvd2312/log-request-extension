@@ -63,18 +63,14 @@ const mergeRequests = async () => {
         elm = { ...elm, requestsHeader: findHeader.requestsHeader };
       return elm;
     });
-    const requestMergePost = requestMerge
-      .filter((elm) =>
-        elm.url.includes("api/retail_web/loyalty/getBalanceLoyalty")
-      )
-      .reduce((latest, current) => {
-        if (!latest) return current;
+    const requestMergePost = requestMerge.reduce((latest, current) => {
+      if (!latest) return current;
 
-        const latestTime = parseTime(latest.time);
-        const currentTime = parseTime(current.time);
+      const latestTime = parseTime(latest.time);
+      const currentTime = parseTime(current.time);
 
-        return currentTime > latestTime ? current : latest;
-      }, null);
+      return currentTime > latestTime ? current : latest;
+    }, null);
     const postData = JSON.parse(requestMergePost.postData) ?? "";
     const headers = requestMergePost?.requestsHeader ?? [];
     infoAuth = { ...infoAuth, body: postData, headers };

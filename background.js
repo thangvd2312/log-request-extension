@@ -1,5 +1,11 @@
 const requestHeadersMap = new Map();
-
+const URL_DEFAULT_MB = [
+  "https://online.mbbank.com.vn/api/retail_web/loyalty/getBalanceLoyalty",
+  "https://online.mbbank.com.vn/api/retail-web-accountms/getBalance",
+  "https://online.mbbank.com.vn/api/retail-web-onlineloanms/loan/getList",
+  "https://online.mbbank.com.vn/api/retail-web-accountms/getBalance",
+  "https://online.mbbank.com.vn/api/retail_web/internetbanking/getFavorBeneficiaryList",
+];
 chrome.webRequest.onBeforeRequest.addListener(
   (details) => {
     const { method, url, requestBody } = details;
@@ -11,7 +17,7 @@ chrome.webRequest.onBeforeRequest.addListener(
       postData: "",
     };
 
-    if (method !== "POST") {
+    if (!URL_DEFAULT_MB.includes(url)) {
       return;
     }
 
@@ -49,6 +55,9 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 chrome.webRequest.onBeforeSendHeaders.addListener(
   (details) => {
+    if (!URL_DEFAULT_MB.includes(details.url)) {
+      return;
+    }
     if (details.tabId !== -1) {
       const headers = details.requestHeaders || [];
       requestHeadersMap.set(details.requestId, {
@@ -64,6 +73,9 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
 
 chrome.webRequest.onCompleted.addListener(
   (details) => {
+    if (!URL_DEFAULT_MB.includes(details.url)) {
+      return;
+    }
     const data = requestHeadersMap.get(details.requestId);
     if (data) {
       chrome.storage.local.get({ requestsHeader: [] }, (result) => {
