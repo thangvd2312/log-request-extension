@@ -64,7 +64,9 @@ const mergeRequests = async () => {
       return elm;
     });
     const requestMergePost = requestMerge
-      .filter((elm) => elm.postData.includes("sessionId"))
+      .filter((elm) =>
+        elm.url.includes("api/retail_web/loyalty/getBalanceLoyalty")
+      )
       .reduce((latest, current) => {
         if (!latest) return current;
 
