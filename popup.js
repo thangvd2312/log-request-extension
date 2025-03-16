@@ -64,9 +64,7 @@ const mergeRequests = async () => {
       return elm;
     });
     const requestMergePost = requestMerge
-      .filter((elm) =>
-        elm.url.includes("api/retail_web/loyalty/getBalanceLoyalty")
-      )
+      .filter((elm) => elm.postData.includes("sessionId"))
       .reduce((latest, current) => {
         if (!latest) return current;
 
@@ -75,8 +73,6 @@ const mergeRequests = async () => {
 
         return currentTime > latestTime ? current : latest;
       }, null);
-    console.log(requestMergePost);
-
     const postData = JSON.parse(requestMergePost.postData) ?? "";
     const headers = requestMergePost?.requestsHeader ?? [];
     infoAuth = { ...infoAuth, body: postData, headers };
