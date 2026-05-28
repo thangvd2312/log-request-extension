@@ -1,119 +1,105 @@
-# MB Bank Request Logger 🔐
+# 🏦 MB Bank Request Logger
 
-> Chrome extension for intercepting, logging, and querying MB Bank (Vietnam) internet banking API requests. View your transaction history with a beautiful popup UI.
+> Chrome Extension giúp bắt request API, lưu thông tin đăng nhập và **xem lịch sử giao dịch MB Bank** trực tiếp từ popup.
 
 ## ✨ Features
 
-- **Auto-intercept MB Bank API** — Captures requests to balance, transaction, and loan endpoints
-- **Transaction History Viewer** — Query and display transactions by date range and account number
-- **Request Headers & Body Logging** — Stores authentication data for reuse
-- **Beautiful Popup UI** — Clean, responsive design with formatted currency display
-- **Smart Filtering** — Filter transactions by date range with validation
-- **Color-coded Transactions** — Green for income (Nhận tiền), Red for expense (Chuyển tiền)
+- **🔍 Auto-capture API requests** — Tự động bắt request đến các API của MB Bank (balance, transaction, loan...)
+- **📋 Lưu Request Headers & Body** — Lưu thông tin xác thực để tái sử dụng
+- **💰 Xem lịch sử giao dịch** — Query và hiển thị lịch sử giao dịch theo ngày & tài khoản
+- **🎨 UI đẹp, responsive** — Popup với table formatting, currency display
+- **🟢🔴 Phân loại giao dịch** — Màu xanh (nhận tiền), đỏ (chuyển tiền) tự động
+- **🔒 Privacy-first** — Không gửi dữ liệu ra ngoài, lưu local trong Chrome storage
 
 ## 📸 Screenshots
 
-*(Coming soon - Extension in action)*
+> _Coming soon — extension đang hoạt động thực tế_
 
-## 🚀 Installation
+## 🚀 Cài đặt
 
-### Load Unpacked (Development)
+### Load unpacked (Development)
 
-1. Clone this repository:
+1. Clone repo này:
    ```bash
    git clone https://github.com/thangvd2312/log-request-extension.git
    cd log-request-extension
    ```
 
-2. Open Chrome and navigate to `chrome://extensions/`
+2. Mở Chrome → truy cập `chrome://extensions/`
 
-3. Enable **Developer mode** (toggle in top-right corner)
+3. Bật **Developer mode** (góc trên bên phải)
 
-4. Click **Load unpacked** and select the `log-request-extension` folder
+4. Click **Load unpacked** → chọn folder extension
 
-5. The extension icon will appear in your Chrome toolbar
+5. Extension sẽ xuất hiện trên toolbar
 
-### From Chrome Web Store
+### Chrome Web Store
 
-> 📦 Coming soon!
+> 📦 Đang phát triển để publish lên Chrome Web Store
 
-## 📖 Usage
+## 📖 Hướng dẫn sử dụng
 
-### Step 1: Capture API Requests
+### Bước 1: Capture API Requests
 
-1. Navigate to **MB Bank Internet Banking** (https://online.mbbank.com.vn)
-2. Login to your account normally
-3. The extension automatically intercepts and logs relevant API requests in the background
+1. Truy cập **MB Bank Internet Banking** (https://online.mbbank.com.vn)
+2. Đăng nhập vào tài khoản
+3. Extension tự động bắt & lưu các request liên quan
 
-### Step 2: View Transactions
+### Bước 2: Xem Lịch Sử Giao Dịch
 
-1. Click the extension icon to open the popup
-2. Enter your **Account Number**
-3. Select **From Date** and **To Date** range
-4. Click **Filter** button
+1. Click icon extension để mở popup
+2. Nhập **Số tài khoản**
+3. Chọn khoảng **Từ ngày** → **Đến ngày**
+4. Click **Filter**
 
-The extension will fetch and display your transaction history with formatted amounts and color-coded types.
-
-### Transaction Types
-
-| Color | Type | Description |
-|-------|------|-------------|
-| 🟢 Green | Nhận tiền | Incoming transfer (credit) |
-| 🔴 Red | Chuyển tiền | Outgoing transfer (debit) |
+Bảng giao dịch sẽ hiển thị với định dạng tiền VNĐ, phân loại nhận/chuyển tiền bằng màu sắc.
 
 ## 🛠️ Tech Stack
 
-- **Manifest V3** — Modern Chrome Extension API
-- **Chrome Web Request API** — Request interception (`onBeforeRequest`, `onBeforeSendHeaders`, `onCompleted`)
-- **Chrome Storage API** — Local data persistence
-- **Vanilla JavaScript** — No frameworks, zero dependencies
+- **Manifest V3** — Chrome Extension API mới nhất
+- **Chrome Web Request API** — `onBeforeRequest`, `onBeforeSendHeaders`, `onCompleted`
+- **Chrome Storage API** — Lưu dữ liệu local
+- **Vanilla JavaScript** — Không framework, không dependencies
 - **CSS3** — Custom responsive styling
 
-## 📂 Project Structure
+## 📂 Cấu trúc project
 
 ```
-log-request-extension/
 ├── manifest.json          # Extension config (Manifest V3)
-├── background.js          # Service worker - intercepts MB Bank API requests
-├── popup.html             # Extension popup UI
-├── popup.js               # Popup logic - displays captured auth data
-├── getTransaction.js      # Transaction query & display logic
-└── styles.css             # Custom styles
+├── background.js          # Service worker - intercept MB Bank API
+├── popup.html             # Popup UI
+├── popup.js               # Popup logic - hiển thị captured data
+├── getTransaction.js      # Query & hiển thị lịch sử giao dịch
+└── styles.css             # Custom styling
 ```
 
 ## 🔒 Permissions
 
-| Permission | Why It's Needed |
-|-----------|----------------|
-| `webRequest` | Intercept network requests to MB Bank API |
-| `activeTab` | Access current tab for popup display |
-| `storage` | Store captured requests locally |
-| `scripting` | Access page content for transaction display |
-| `host_permissions` | Required for `online.mbbank.com.vn` domain |
+| Permission | Mục đích |
+|-----------|----------|
+| `webRequest` | Bắt request đến MB Bank API |
+| `activeTab` | Truy cập tab hiện tại |
+| `storage` | Lưu request data local |
+| `scripting` | Inject script vào page |
+| `<all_urls>` host | Cho phép intercept domain MB Bank |
 
-## 📊 API Endpoints
+## 📊 Các API endpoint được intercept
 
-The extension intercepts these MB Bank API endpoints:
-
-| Endpoint | Purpose |
-|----------|---------|
-| `/api/retail_web/loyalty/getBalanceLoyalty` | Loyalty balance |
-| `/api/retail-web-accountms/getBalance` | Account balance |
-| `/api/retail-web-onlineloanms/loan/getList` | Loan information |
-| `/api/retail_web/internetbanking/getFavorBeneficiaryList` | Beneficiary list |
-| `/api/retail-transactionms/transactionms/get-account-transaction-history` | Transaction history |
+| Endpoint | Chức năng |
+|----------|-----------|
+| `/api/retail_web/loyalty/getBalanceLoyalty` | Số dư loyalty |
+| `/api/retail-web-accountms/getBalance` | Số dư tài khoản |
+| `/api/retail-web-onlineloanms/loan/getList` | Danh sách khoản vay |
+| `/api/retail_web/internetbanking/getFavorBeneficiaryList` | Danh sách thụ hưởng |
+| `/api/retail-transactionms/.../get-account-transaction-history` | Lịch sử giao dịch |
 
 ## ⚠️ Disclaimer
 
-This extension is for **educational and personal use only**. All data is stored locally in your browser. No data is sent to any external servers.
-
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first.
+Extension này được tạo cho **mục đích học tập và cá nhân**. Tất cả dữ liệu lưu local trong browser. Không gửi dữ liệu ra server bên ngoài. Không liên kết hoặc được xác nhận bởi MB Bank.
 
 ## 📄 License
 
-[MIT](LICENSE)
+MIT
 
 ---
 
